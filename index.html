@@ -22,11 +22,6 @@
             width: 80%;
             height: 80%;
         }
-        button {
-            width: fit-content;
-            height: fit-content;
-            display: none;
-        }
         body>div {
             display: flex;
             flex-direction: row;
@@ -39,6 +34,8 @@
             width: 100px;
             height: 100px;
             border: none;
+            border-bottom-left-radius: 25%;
+            border-bottom-right-radius: 25%;
         }
         span {
             margin: auto;
@@ -52,15 +49,34 @@
         div>button.kosong {
             background-color: white;
         }
+        body>div:nth-child(4) {
+            margin-top: 10px;
+            width: 100%;
+            height: 60%;
+            overflow-y: scroll;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 10px;
+            background-color: aliceblue;
+            box-sizing: border-box;
+            padding: 5px 10px;
+        }
+        h2 {
+            align-self: flex-start;
+        }
     </style>
 </head>
 <body>
     <h1>Menukar Isian Gelas</h1>
-    <button type="button" id="addGlass">Tambah Gelas</button>
     <div>
         <button class="kopi" id="glass1"></button>
         <button class="teh" id="glass2"></button>
         <button class="kosong" id="glass3"></button>
+    </div>
+    <h2>Apa yang terjadi?</h2>
+    <div>
     </div>
     <script>
         const glasses = [
@@ -69,6 +85,17 @@
             document.getElementById('glass3')
         ]
         let fill = ''
+        let order = 0;
+
+        function typeText(i, fill) {
+            if (fill !== 'kosong') {
+                order++;
+                const newLine = document.createElement('div')
+                newLine.innerText = `${order}. ${fill} telah dipindahkan ke gelas yang kosong dan gelas ke-${i+1} sekarang kosong`
+                document.querySelector('body>div:nth-child(4)').append(newLine)
+            }
+        }
+
         function change(i) {
             fill = glasses[i].getAttribute('class')
             glasses.forEach((item) => {
@@ -77,6 +104,7 @@
                 }
             })
             glasses[i].setAttribute('class','kosong')
+            typeText(i, fill)
         }
         document.querySelector('button#glass1').addEventListener('click',function() {change(0);})
         document.querySelector('button#glass2').addEventListener('click',function() {change(1);})
